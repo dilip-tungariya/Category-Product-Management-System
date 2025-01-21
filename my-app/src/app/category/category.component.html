@@ -1,26 +1,29 @@
 <div>
-    <h2>Category Master</h2>
-    <input [(ngModel)]="categoryName" placeholder="Category Name" />
-    <button (click)="addCategory()">Add Category</button>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>CategoryId</th>
-          <th>CategoryName</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let category of categories">
-          <td>{{ category.CategoryId }}</td>
-          <td>{{ category.CategoryName }}</td>
-          <td>
-            <button (click)="updateCategory(category.CategoryId)">Update</button>
-            <button (click)="deleteCategory(category.CategoryId)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h2>Category Master</h2>
+  <input [(ngModel)]="categoryName" placeholder="Category Name" />
+  <button (click)="addCategory()">Add Category</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>CategoryId</th>
+        <th>CategoryName</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let category of categories | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:total }">
+        <td>{{ category.CategoryId }}</td>
+        <td>{{ category.CategoryName }}</td>
+        <td>
+          <button (click)="updateCategory(category.CategoryId)">Update</button>
+          <button (click)="deleteCategory(category.CategoryId)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+    <div *ngIf="total > pageSize">
+      <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+    </div>
+  </table>
+</div>

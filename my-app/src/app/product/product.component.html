@@ -1,35 +1,38 @@
 <div>
-    <h2>Product Master</h2>
-    <input [(ngModel)]="productName" placeholder="Product Name" />
-    <select [(ngModel)]="categoryId">
-      <option *ngFor="let category of categories" [value]="category.CategoryId">
-        {{ category.CategoryName }}
-      </option>
-    </select>
-    <button (click)="addProduct()">Add Product</button>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>ProductId</th>
-          <th>ProductName</th>
-          <th>CategoryId</th>
-          <th>CategoryName</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products">
-          <td>{{ product.ProductId }}</td>
-          <td>{{ product.ProductName }}</td>
-          <td>{{ product.CategoryId }}</td>
-          <td>{{ product.CategoryName }}</td>
-          <td>
-            <button (click)="updateProduct(product.ProductId, product.CategoryId)">Update</button>
-            <button (click)="deleteProduct(product.ProductId)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h2>Product Master</h2>
+  <input [(ngModel)]="productName" placeholder="Product Name" />
+  <select [(ngModel)]="categoryId">
+    <option *ngFor="let category of categories" [value]="category.CategoryId">
+      {{ category.CategoryName }}
+    </option>
+  </select>
+  <button (click)="addProduct()">Add Product</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ProductId</th>
+        <th>ProductName</th>
+        <th>CategoryId</th>
+        <th>CategoryName</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let product of products | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:total }">
+        <td>{{ product.ProductId }}</td>
+        <td>{{ product.ProductName }}</td>
+        <td>{{ product.CategoryId }}</td>
+        <td>{{ product.CategoryName }}</td>
+        <td>
+          <button (click)="updateProduct(product.ProductId, product.CategoryId)">Update</button>
+          <button (click)="deleteProduct(product.ProductId)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+    <div *ngIf="total > pageSize">
+      <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+    </div>
+  </table>
+</div>

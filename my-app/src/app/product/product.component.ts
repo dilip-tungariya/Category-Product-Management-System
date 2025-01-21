@@ -12,6 +12,9 @@ export class ProductComponent implements OnInit {
   categoryId: number = 1;  // Default category ID for new products
 
   categories: any[] = [];
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  total: number;
 
   constructor(private apiService: ApiService) { }
 
@@ -44,13 +47,16 @@ export class ProductComponent implements OnInit {
     var obj = {
       "spName": "usp_product",
       "params": {
-        "Flag": "GET"
+        "Flag": "GET",
+        "PageNum": this.pageNumber,
+        "PageSize": this.pageSize
       }
     };
     this.apiService.post(obj).subscribe(data => {
       if (data.statusCode === 200) {
         if (data.message === 'Data found') {
           this.products = data.data.records;
+          this.total = data.data.totalRecords;
         }
       }
     });
@@ -116,5 +122,10 @@ export class ProductComponent implements OnInit {
     }, (error) => {
       alert(error.error.message);
     });
+  }
+
+  pageChange(page: number): void {
+    this.pageNumber = page;
+    this.loadProducts();
   }
 }

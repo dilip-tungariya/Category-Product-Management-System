@@ -9,6 +9,9 @@ import { ApiService } from '../api.service';
 export class CategoryComponent implements OnInit {
   categories: any = [];
   categoryName: string = '';
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  total: number;
 
   constructor(private apiService: ApiService) { }
 
@@ -20,13 +23,16 @@ export class CategoryComponent implements OnInit {
     var obj = {
       "spName": "usp_category",
       "params": {
-        "Flag": "GET"
+        "Flag": "GET",
+        "PageNum": this.pageNumber,
+        "PageSize": this.pageSize
       }
     };
     this.apiService.post(obj).subscribe(data => {
       if (data.statusCode === 200) {
         if (data.message === 'Data found') {
           this.categories = data.data.records;
+          this.total = data.data.totalRecords;
         }
       }
     }, (error) => {
@@ -95,5 +101,10 @@ export class CategoryComponent implements OnInit {
         alert(error.error.message);
       }
     });
+  }
+
+  pageChange(page:number):void{
+    this.pageNumber = page;
+    this.loadCategories();
   }
 }
