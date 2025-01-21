@@ -1,11 +1,13 @@
 const mssql = require('mssql');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const config = {
-    user: 'sa',
-    password: 'sa@123',
-    database: 'Category_Product_Management_System',
-    server: 'localhost',
-    port: 1433,
+    user: process.env.MSSQL_USER,
+    password: process.env.MSSQL_PASSWORD,
+    database: process.env.MSSQL_DATABASE_NAME,
+    server: process.env.MSSQL_SERVER,
+    port: Number(process.env.MSSQL_PORT),
     dialect: "mssql",
     dialectOptions: {
         "instanceName": "SQLEXPRESS",
